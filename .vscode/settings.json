@@ -1,0 +1,6 @@
+{
+	"search.exclude": {
+		"export/**/*.*": true
+	},
+	"lime.defaultTargetConfiguration": "HTML5"
+}
