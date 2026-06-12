@@ -20,6 +20,6 @@ class SplashState extends FlxState
 
 	function leave()
 	{
-		FlxG.switchState(() -> new LessonCategorySelect());
+		FlxG.switchState(() -> new gse.lessonCategory.LessonCategorySelect());
 	}
 }
