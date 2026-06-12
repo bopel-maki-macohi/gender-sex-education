@@ -1,5 +1,8 @@
 package gse.lessons;
 
+import flixel.util.FlxColor;
+import flixel.text.FlxText;
+import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
 import haxe.io.Path;
 import lime.utils.Assets;
 import gse.lessonCategory.LessonCategorySelect;
@@ -20,6 +23,10 @@ class LessonSelect extends FlxState
 
 	var list:Array<String> = [];
 
+	var texts:FlxTypedSpriteContainer<FlxText>;
+
+	var selected = 0;
+
 	override function create()
 	{
 		super.create();
@@ -39,6 +46,19 @@ class LessonSelect extends FlxState
 		}
 
 		trace(list);
+
+		texts = new FlxTypedSpriteContainer<FlxText>();
+		add(texts);
+
+		for (i => file in list)
+		{
+			var text = new FlxText(0, 0, 0, Path.withoutDirectory(Path.withoutExtension(file)), 16);
+			text.ID = i;
+
+			texts.add(text);
+		}
+
+		changeSel(0);
 	}
 
 	override function update(elapsed:Float)
@@ -47,5 +67,28 @@ class LessonSelect extends FlxState
 
 		if (FlxG.keys.anyJustPressed([ESCAPE]))
 			FlxG.switchState(() -> new LessonCategorySelect());
+
+		if (FlxG.sound?.music == null || !FlxG.sound?.music?.playing)
+			FlxG.sound.playMusic(Paths.audio(Paths.music('TopicSelection')));
+
+		if (FlxG.keys.anyJustPressed([W, UP]))
+			changeSel(-1);
+		if (FlxG.keys.anyJustPressed([S, DOWN]))
+			changeSel(1);
+
+		for (text in texts)
+		{
+			text.y = text.ID * (text.size * 2);
+		}
+	}
+
+	function changeSel(amount:Int)
+	{
+		selected += amount;
+
+		selected = Std.int(Math.min(Math.max(selected, 0), texts.length - 1));
+
+		for (text in texts)
+			text.color = (selected == text.ID) ? FlxColor.YELLOW : FlxColor.WHITE;
 	}
 }
