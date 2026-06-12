@@ -1,5 +1,6 @@
 package gse.lessonCategory;
 
+import gse.lessons.LessonSelect;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -36,10 +37,13 @@ class LessonCategorySelect extends FlxState
 		if (FlxG.sound?.music == null || !FlxG.sound?.music?.playing)
 			FlxG.sound.playMusic(Paths.audio(Paths.music('TopicSelection')));
 
-		if (FlxG.keys.anyJustPressed([A,LEFT]))
+		if (FlxG.keys.anyJustPressed([A, LEFT]))
 			changeSel(-1);
-		if (FlxG.keys.anyJustPressed([D,RIGHT]))
+		if (FlxG.keys.anyJustPressed([D, RIGHT]))
 			changeSel(1);
+		
+		if (FlxG.keys.anyJustPressed([ENTER]))
+			FlxG.switchState(() -> new LessonSelect((selected == 0) ? GENDER : SEXUALITY));
 	}
 
 	function changeSel(amount:Int)
