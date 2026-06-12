@@ -1,5 +1,7 @@
 package gse.lessons;
 
+import flixel.FlxObject;
+import flixel.FlxCamera;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteContainer.FlxTypedSpriteContainer;
@@ -26,6 +28,8 @@ class LessonSelect extends FlxState
 	var texts:FlxTypedSpriteContainer<FlxText>;
 
 	var selected = 0;
+
+	var camFollow:FlxObject;
 
 	override function create()
 	{
@@ -58,6 +62,12 @@ class LessonSelect extends FlxState
 			texts.add(text);
 		}
 
+		camFollow = new FlxObject();
+		add(camFollow);
+
+		FlxG.camera.follow(camFollow, LOCKON, 0.04);
+		FlxG.camera.focusOn(camFollow.getPosition());
+
 		changeSel(0);
 	}
 
@@ -89,6 +99,10 @@ class LessonSelect extends FlxState
 		selected = Std.int(Math.min(Math.max(selected, 0), texts.length - 1));
 
 		for (text in texts)
+		{
 			text.color = (selected == text.ID) ? FlxColor.YELLOW : FlxColor.WHITE;
+
+			if (selected == text.ID) camFollow.y = text.y;
+		}
 	}
 }
