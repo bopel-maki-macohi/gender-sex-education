@@ -86,6 +86,9 @@ class LessonSelect extends FlxState
 		if (FlxG.keys.anyJustPressed([S, DOWN]))
 			changeSel(1);
 
+		if (FlxG.keys.anyJustPressed([ENTER]))
+			FlxG.switchState(() -> new LessonState(list[selected]));
+
 		for (text in texts)
 		{
 			text.y = text.ID * (text.size * 2);
@@ -96,7 +99,10 @@ class LessonSelect extends FlxState
 	{
 		selected += amount;
 
-		selected = Std.int(Math.min(Math.max(selected, 0), texts.length - 1));
+		selected = Std.int(Math.min(Math.max(selected, -1), texts.length));
+
+		if (selected <= -1) selected = texts.length - 1;
+		if (selected >= texts.length) selected = 0;
 
 		for (text in texts)
 		{
